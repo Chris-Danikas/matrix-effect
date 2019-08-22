@@ -3,7 +3,7 @@ let streams = [];
 
 function setup() {
     // creates a screen-sized black canvas
-    createCanvas(windowWidth, 1000);
+    createCanvas(windowWidth, windowHeight);
     background(0);
     textSize(symbolSize);
 
@@ -81,16 +81,16 @@ function Stream() {
             } else {
 
                 // rainbow effect
-                if (symbol.y < 200)
-                    fill(255, symbol.y / 200 * 255, 0);
-                else if (symbol.y >= 200 && symbol.y < 400)
-                    fill(255 - ((symbol.y-200) / 200 * 255), 255, 0);
-                else if (symbol.y >= 400 && symbol.y < 600)
-                    fill(0, 255, (symbol.y-400) / 200 * 255);
-                else if (symbol.y >= 600 && symbol.y < 800)
-                    fill(0, 255 - ((symbol.y-600) / 200 * 255), 255);
-                else if (symbol.y >= 800 && symbol.y < 1000)
-                    fill((symbol.y-800) / 200 * 255, 0, 255);
+                if (symbol.y < round(windowHeight / 5))
+                    fill(255, symbol.y / round(windowHeight / 5) * 255, 0);
+                else if (symbol.y >= round(windowHeight / 5) && symbol.y < 2 * round(windowHeight / 5))
+                    fill(255 - ((symbol.y-round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255, 0);
+                else if (symbol.y >= 2 * round(windowHeight / 5) && symbol.y < 3 * round(windowHeight / 5))
+                    fill(0, 255, (symbol.y-2 * round(windowHeight / 5)) / round(windowHeight / 5) * 255);
+                else if (symbol.y >= 3 * round(windowHeight / 5) && symbol.y < 4 * round(windowHeight / 5))
+                    fill(0, 255 - ((symbol.y-3 * round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255);
+                else if (symbol.y >= 4 * round(windowHeight / 5) && symbol.y < round(windowHeight))
+                    fill((symbol.y - 4 * round(windowHeight / 5)) / round(windowHeight / 5) * 255, 0, 255);
 
             }
 
