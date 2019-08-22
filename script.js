@@ -3,7 +3,7 @@ let streams = [];
 
 function setup() {
     // creates a screen-sized black canvas
-    createCanvas(windowWidth - 15, windowHeight - 20);
+    createCanvas(windowWidth, 1000);
     background(0);
     textSize(symbolSize);
 
@@ -79,8 +79,21 @@ function Stream() {
             if (symbol.first) {
                 fill(180, 255, 180);
             } else {
-                fill(0, 255, 70);
+
+                // rainbow effect
+                if (symbol.y < 200)
+                    fill(255, symbol.y / 200 * 255, 0);
+                else if (symbol.y >= 200 && symbol.y < 400)
+                    fill(255 - ((symbol.y-200) / 200 * 255), 255, 0);
+                else if (symbol.y >= 400 && symbol.y < 600)
+                    fill(0, 255, (symbol.y-400) / 200 * 255);
+                else if (symbol.y >= 600 && symbol.y < 800)
+                    fill(0, 255 - ((symbol.y-600) / 200 * 255), 255);
+                else if (symbol.y >= 800 && symbol.y < 1000)
+                    fill((symbol.y-800) / 200 * 255, 0, 255);
+
             }
+
             text(symbol.value, symbol.x, symbol.y);
             symbol.rain();
             symbol.setToRandomSymbol();
