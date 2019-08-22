@@ -87,3 +87,5 @@ function Stream() {
         });
     }
 }
+
+// make it more like this: https://weboas.is
