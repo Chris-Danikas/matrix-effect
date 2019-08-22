@@ -3,7 +3,7 @@ let streams = [];
 
 function setup() {
     // creates a screen-sized black canvas
-    createCanvas(window.innerWidth, window.innerHeight);
+    createCanvas(windowWidth - 15, windowHeight - 20);
     background(0);
     textSize(symbolSize);
 
