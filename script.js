@@ -1,4 +1,4 @@
-let symbolSize = 15;
+let symbolSize = 10;
 let streams = [];
 
 function setup() {
@@ -25,18 +25,21 @@ function draw() {
     });
 }
 
-function Symbol(x, y, speed, first) {
+class Symbol {
 
-    // x and y values for position rendering
-    this.x = x;
-    this.y = y;
-    this.value;
-    this.speed = speed;
-    this.first = first
-    this.switchInterval = round(random(2, 20));
+    constructor (x, y, speed, order) {
+        // x and y values for position rendering
+        this.x = x;
+        this.y = y;
+        this.value;
+        this.speed = speed;
+        this.order = order
+        this.switchInterval = round(random(2, 20));
+    }
+
 
     // sets the value to a random character via encoding
-    this.setToRandomSymbol = function() {
+    setToRandomSymbol() {
         // frameCount built-in variable in p5.js
         if (frameCount % this.switchInterval == 0) {
             // if to frameCount einai pollaplasio
@@ -46,54 +49,71 @@ function Symbol(x, y, speed, first) {
     }
 
     // making the symbols fall
-    this.rain = function() {
+    rain() {
         this.y = (this.y >= height) ? 0 : this.y += this.speed;
     }
 
 }
 
 // lorida fash
-function Stream() {
-    this.symbols = [];
-    this.totalSymbols = round(random(5, 30));
-    this.speed = random(5, 15);
+class Stream {
+
+    constructor () {
+        this.symbols = [];
+        this.totalSymbols = round(random(8, 50));
+        this.speed = random(5, 15);
+    }
 
     // generates lorides
-    this.generateSymbols = function(x, y) {
-
-        // 50% chance of getting a white character at the start
-        let first = round(random(0, 1)) == 1;
+    generateSymbols(x, y) {
 
         for (let i = 0; i <= this.totalSymbols; i++) {
-            symbol = new Symbol(x, y, this.speed, first);
+            let symbol = new Symbol(x, y, this.speed, ++i);
             symbol.setToRandomSymbol();
             this.symbols.push(symbol);
             y -= symbolSize;
-            first = false;
         }
     }
 
     // kanei render ta symbola ths loridas
-    this.render = function() {
+    render() {
         this.symbols.forEach(symbol => {
-            if (symbol.first) {
-                fill(180, 255, 180);
+
+            let symbolColor;
+
+            if (symbol.order == 1 && round(random(0, 1)) == 1) {
+                symbolColor = color(50, 255, 200);
+                fill(symbolColor);
             } else {
-
                 // rainbow effect
-                if (symbol.y < round(windowHeight / 5))
-                    fill(255, symbol.y / round(windowHeight / 5) * 255, 0);
-                else if (symbol.y >= round(windowHeight / 5) && symbol.y < 2 * round(windowHeight / 5))
-                    fill(255 - ((symbol.y-round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255, 0);
-                else if (symbol.y >= 2 * round(windowHeight / 5) && symbol.y < 3 * round(windowHeight / 5))
-                    fill(0, 255, (symbol.y-2 * round(windowHeight / 5)) / round(windowHeight / 5) * 255);
-                else if (symbol.y >= 3 * round(windowHeight / 5) && symbol.y < 4 * round(windowHeight / 5))
-                    fill(0, 255 - ((symbol.y-3 * round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255);
-                else if (symbol.y >= 4 * round(windowHeight / 5) && symbol.y < round(windowHeight))
-                    fill((symbol.y - 4 * round(windowHeight / 5)) / round(windowHeight / 5) * 255, 0, 255);
-
+                if (symbol.y < round(windowHeight / 5)) {
+                    symbolColor = color(255, symbol.y / round(windowHeight / 5) * 255, 0);
+                    symbolColor.setAlpha(256 / symbol.order * 4);
+                    fill(symbolColor);                 
+                }                
+                else if (symbol.y >= round(windowHeight / 5) && symbol.y < 2 * round(windowHeight / 5)) {
+                    symbolColor = color(255 - ((symbol.y-round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255, 0);
+                    symbolColor.setAlpha(256 / symbol.order * 4);
+                    fill(symbolColor); 
+                }
+                else if (symbol.y >= 2 * round(windowHeight / 5) && symbol.y < 3 * round(windowHeight / 5)) {
+                    symbolColor = color(0, 255, (symbol.y-2 * round(windowHeight / 5)) / round(windowHeight / 5) * 255);
+                    symbolColor.setAlpha(256 / symbol.order * 4);
+                    fill(symbolColor); 
+                }
+                else if (symbol.y >= 3 * round(windowHeight / 5) && symbol.y < 4 * round(windowHeight / 5)) {
+                    symbolColor = color(0, 255 - ((symbol.y-3 * round(windowHeight / 5)) / round(windowHeight / 5) * 255), 255);
+                    symbolColor.setAlpha(256 / symbol.order * 4);
+                    fill(symbolColor); 
+                }
+                else if (symbol.y >= 4 * round(windowHeight / 5) && symbol.y < round(windowHeight)) {
+                    symbolColor = color((symbol.y - 4 * round(windowHeight / 5)) / round(windowHeight / 5) * 255, 0, 255);
+                    symbolColor.setAlpha(256 / symbol.order * 4);
+                    fill(symbolColor); 
+                }
             }
 
+            //setAlpha(256 * (25 - symbol.order));
             text(symbol.value, symbol.x, symbol.y);
             symbol.rain();
             symbol.setToRandomSymbol();
@@ -102,3 +122,4 @@ function Stream() {
 }
 
 // make it more like this: https://weboas.is
+// next: na kanw ta pisw grammata ths loridas me ligotero opacity kai na kanw ta constructor functions classes
